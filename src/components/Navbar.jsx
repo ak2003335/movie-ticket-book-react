@@ -18,7 +18,8 @@ export default function Navbar() {
           </h2>
         </Link>
         <div className="float-right">
-            <Link className="custBtn px-4" to={'/signin'}><b>SIGN IN</b></Link>
+            <Link className="custBtn px-4 mx-3" to={'/signin'}><b>SIGN IN</b></Link>
+            <Link className="custBtn px-4" to={'/upload-theater'}><b>UPLOAD THEATER</b></Link>
         </div>
       </div>
     </nav>

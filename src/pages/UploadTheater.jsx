@@ -3,31 +3,42 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-export default function Registration() {
+export default function UploadTheater() {
   const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-    role: "",
+    name: "",
+    totalSeats: "",
+    seatsPerRow: "",
+    image: null,
+    imageValue: "",
   });
 
   const handleChange = (e) => {
-    setForm((prevalue) => ({
-      ...prevalue,
-      [e.target.name]: e.target.value,
-    }));
+    if (e.target.name == "image") {
+      setForm((prevalue) => ({
+        ...prevalue,
+        [e.target.name]: e.target.files[0].name,
+      }));
+      console.log(e.target.files[0].name);
+    } else {
+      setForm((prevalue) => ({
+        ...prevalue,
+        [e.target.name]: e.target.value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.username || !form.email || !form.password || !form.role) {
+    console.log(form);
+
+    if (!form.name || !form.image || !form.seatsPerRow || !form.totalSeats) {
       return toast.error("Please fill all details");
     }
 
     try {
       const response = await axios.post(
-        "https://movie-ticket-server.vercel.app/auth/register",
+        "http://localhost:4000/theater/post-theater",
         form
       );
 
@@ -37,7 +48,13 @@ export default function Registration() {
       toast.error(error.response.data.message);
     }
 
-    setForm({ username: "", email: "", password: "", role: "" });
+    setForm({
+      name: "",
+      image: null,
+      seatsPerRow: "",
+      totalSeats: "",
+      imageValue: "",
+    });
   };
 
   return (
@@ -47,68 +64,66 @@ export default function Registration() {
         style={{ width: "25vw", backgroundColor: "#041134" }}
       >
         <h1 className="text-center">
-          <b>Sign up</b>
+          <b>Upload Theater</b>
         </h1>
         <br />
         <form className="mx-2" onSubmit={handleSubmit}>
           <div className="form-group my-2">
             <label htmlFor="">
-              <b>Username</b>
+              <b>Name</b>
             </label>
             <input
               type="text"
               className="form-control"
-              name="username"
-              placeholder="Enter your username"
-              value={form.username}
+              name="name"
+              placeholder="Enter your Theatername"
+              value={form.name}
               onChange={handleChange}
             />
           </div>
           <div className="form-group">
             <label htmlFor="exampleInputEmail1">
-              <b>Email</b>
+              <b>TotalSeats</b>
             </label>
             <input
-              type="email"
+              type="number"
               className="form-control"
-              name="email"
-              placeholder="Enter your email"
-              value={form.email}
+              name="totalSeats"
+              placeholder="Enter Total no of seats"
+              value={form.totalSeats}
               onChange={handleChange}
             />
           </div>
           <div className="form-group my-3">
-            <label htmlFor="">
-              <b>Role</b>
-            </label>
-            <select
-              className="form-select"
-              onChange={handleChange}
-              name="role"
-              value={form.role}
-              aria-label="Default select example"
-            >
-              <option selected>Select your role</option>
-              <option value="user">User</option>
-              <option value="owner">Theater owner</option>
-            </select>
-          </div>
-          <div className="form-group my-3">
-            <label htmlFor="exampleInputPassword1">
-              <b>Password</b>
+            <label htmlFor="exampleInputEmail1">
+              <b>SeatsPerRow</b>
             </label>
             <input
-              type="password"
+              type="number"
               className="form-control"
-              name="password"
+              name="seatsPerRow"
+              placeholder="How many row you have"
+              value={form.seatsPerRow}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="exampleInputPassword1">
+              <b>Image of Theater</b>
+            </label>
+            <input
+              type="file"
+              className="form-control"
+              accept="image/*"
+              name="image"
               placeholder="Enter your password"
               onChange={handleChange}
-              value={form.password}
+              value={form.imageValue}
             />
           </div>
           <div className="text-center my-3">
             <button type="submit" className="btn btn-secondary">
-              Sign up
+              Upload
             </button>
           </div>
         </form>

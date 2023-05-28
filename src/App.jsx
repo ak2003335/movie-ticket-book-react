@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import Registration from "./pages/Registration";
+import UploadTheater from "./pages/UploadTheater";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Registration />} />
+        <Route path="/upload-theater" element={<UploadTheater />} />
+        <Route path="/all-theaters" element={<UploadTheater />} />
       </Routes>
       </div>
     </Router>
