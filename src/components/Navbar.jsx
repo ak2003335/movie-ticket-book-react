@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav class="navbar navbar-expand-lg navbar-dark">
-      <div class="container-fluid">
-        <Link class="navbar-brand d-flex" to={"/"}>
+    <nav className="navbar navbar-expand-lg navbar-dark">
+      <div className="container-fluid">
+        <Link className="navbar-brand d-flex" to={"/"}>
           <img
             src="https://www.shutterstock.com/shutterstock/videos/1100748499/thumb/12.jpg?ip=x480"
             alt=""
