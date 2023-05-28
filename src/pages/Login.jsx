@@ -3,10 +3,15 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../redux/user/userSlice";
 
 export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [cookies, setCookie] = useCookies();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChange = (e) => {
     setForm((prevalue) => ({
@@ -26,7 +31,10 @@ export default function Login() {
 
       setCookie("user_Token", response.data.token);
 
+      dispatch(login(response.data.user));
+
       toast.success(response.data.message);
+      navigate("/");
     } catch (error) {
       toast.error(error.response.data.message);
     }

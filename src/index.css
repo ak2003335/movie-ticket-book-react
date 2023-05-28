@@ -13,18 +13,41 @@ body {
   background-clip: text;
 }
 
-.custBtn{
+.custBtn {
   text-decoration: none;
   color: white;
-  background: linear-gradient(to right, rgb(244, 183, 69), rgb(137, 53, 137), rgb(70, 70, 245));
+  background: linear-gradient(
+    to right,
+    rgb(244, 183, 69),
+    rgb(137, 53, 137),
+    rgb(70, 70, 245)
+  );
   padding: 10px;
   border-radius: 10px;
 }
 
-.custBtn:hover{
+.custBtn:hover {
   text-decoration: none;
   color: white;
-  background: linear-gradient(to right, rgb(244, 183, 69), rgb(137, 53, 137), rgb(70, 70, 245));
+  background: linear-gradient(
+    to right,
+    rgb(244, 183, 69),
+    rgb(137, 53, 137),
+    rgb(70, 70, 245)
+  );
   padding: 10px;
   border-radius: 10px;
+}
+
+.cardCst {
+  border: 1px solid white;
+}
+
+.singleSeat {
+  z-index: 100;
+  height: 30px;
+  width: 30px;
+  border: 0.5px solid white;
+  background-color: #041134;
+  color: white;
 }
