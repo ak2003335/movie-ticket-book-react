@@ -12,6 +12,9 @@ export default function SeatBtn({ seat, theaterId }) {
   const [isSeatBooked, setIsSeatBooked] = useState(seat.isBooked);
 
   const handleClick = async (id) => {
+    if(seat.isBooked){
+      return toast.error("Already booked")
+    }
     try {
       await axios.post(
         `https://movie-ticket-server.vercel.app/theater/${theaterId}/${id}`,
