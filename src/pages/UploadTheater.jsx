@@ -1,48 +1,95 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 export default function UploadTheater() {
   const [form, setForm] = useState({
     name: "",
     totalSeats: "",
     seatsPerRow: "",
-    image: null,
-    imageValue: "",
+    image: "",
+    movieName: "",
   });
 
-  const handleChange = (e) => {
-    if (e.target.name == "image") {
-      setForm((prevalue) => ({
-        ...prevalue,
-        [e.target.name]: e.target.files[0].name,
-      }));
-      console.log(e.target.files[0].name);
-    } else {
-      setForm((prevalue) => ({
-        ...prevalue,
-        [e.target.name]: e.target.value,
-      }));
+  const [cookies, setCookie] = useCookies();
+
+  const token = cookies.user_Token;
+  const navigate = useNavigate()
+
+  const [image, setImage] = useState("");
+
+  const handleImageChange = (e) => {
+    e.preventDefault();
+    setImage(e.target.files[0]);
+  };
+
+  const handleUpload = async (event) => {
+    event.preventDefault();
+    if (image) {
+      try {
+        const formData = new FormData();
+        formData.append("file", image);
+        formData.append("upload_preset", "firstupload");
+        formData.append("folder", "uploads");
+
+        const response = await fetch(
+          "https://api.cloudinary.com/v1_1/dey09e5yr/upload",
+          {
+            method: "POST",
+            body: formData,
+          }
+        );
+
+        if (response.ok) {
+          const result = await response.json();
+          toast.success("Image uploaded successfully:");
+          console.log(result);
+          form.image = result.url;
+        } else {
+          toast.error("Image upload failed.");
+        }
+      } catch (error) {
+        toast.error("Error uploading image:");
+      }
     }
+  };
+
+  const handleChange = (e) => {
+    setForm((prevalue) => ({
+      ...prevalue,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    console.log(form);
-
-    if (!form.name || !form.image || !form.seatsPerRow || !form.totalSeats) {
+ 
+    if (!form.image) {
+      return toast.error("Please upload image");
+    } else if (
+      !form.name ||
+      !form.seatsPerRow ||
+      !form.totalSeats ||
+      !form.movieName
+    ) {
       return toast.error("Please fill all details");
     }
 
     try {
       const response = await axios.post(
-        "http://localhost:4000/theater/post-theater",
-        form
+        "https://movie-ticket-server.vercel.app/theater/post-theater",
+        form,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
       );
 
       toast.success(response.data.message);
+      navigate('/upload-theater')
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -54,6 +101,7 @@ export default function UploadTheater() {
       seatsPerRow: "",
       totalSeats: "",
       imageValue: "",
+      movieName: "",
     });
   };
 
@@ -67,7 +115,7 @@ export default function UploadTheater() {
           <b>Upload Theater</b>
         </h1>
         <br />
-        <form className="mx-2" onSubmit={handleSubmit}>
+        <form className="mx-2">
           <div className="form-group my-2">
             <label htmlFor="">
               <b>Name</b>
@@ -107,29 +155,45 @@ export default function UploadTheater() {
               onChange={handleChange}
             />
           </div>
+          <div className="form-group my-3">
+            <label htmlFor="exampleInputEmail1">
+              <b>Movie name</b>
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="movieName"
+              placeholder="Latest movie"
+              value={form.movieName}
+              onChange={handleChange}
+            />
+          </div>
           <div className="form-group">
             <label htmlFor="exampleInputPassword1">
               <b>Image of Theater</b>
             </label>
-            <input
-              type="file"
-              className="form-control"
-              accept="image/*"
-              name="image"
-              placeholder="Enter your password"
-              onChange={handleChange}
-              value={form.imageValue}
-            />
+            <div className="d-flex">
+              <input
+                type="file"
+                className="form-control"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+              <button className="btn btn-secondary mx-2" onClick={handleUpload}>
+                Upload
+              </button>
+            </div>
           </div>
-          <div className="text-center my-3">
-            <button type="submit" className="btn btn-secondary">
-              Upload
+          <div className="text-center" style={{ marginTop: "30px" }}>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="btn btn-secondary"
+            >
+              Upload Theater
             </button>
           </div>
         </form>
-        <div className="float-right my-2 mx-3">
-          Already have account :- <Link to={"/signin"}> Sign in</Link>
-        </div>
       </div>
     </div>
   );

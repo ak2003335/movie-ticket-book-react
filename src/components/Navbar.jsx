@@ -85,13 +85,13 @@ export default function Navbar() {
           ) : (
             ""
           )}
-          {/* {isLoggedin && user.role == 'ownwer' ? (
-            <Link className="custBtn px-4" to={"/upload-theater"}>
+          {isLoggedin && user.role == 'owner' ? (
+            <Link className="custBtn px-4 mx-3" to={"/upload-theater"}>
               <b>UPLOAD THEATER</b>
             </Link>
           ) : (
             ""
-          )} */}
+          )}
         </div>
       </div>
     </nav>

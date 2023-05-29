@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
   const [form, setForm] = useState({
@@ -10,6 +11,7 @@ export default function Registration() {
     password: "",
     role: "",
   });
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     setForm((prevalue) => ({
@@ -32,6 +34,7 @@ export default function Registration() {
       );
 
       toast.success(response.data.message);
+      navigate('/signin')
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);

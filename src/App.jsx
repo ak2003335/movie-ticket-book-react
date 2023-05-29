@@ -21,7 +21,6 @@ function App() {
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Registration />} />
         <Route path="/upload-theater" element={<UploadTheater />} />
-        <Route path="/all-theaters" element={<UploadTheater />} />
         <Route path="/book-ticket" element={<Alltheater />} />
         <Route path="/theater/:id" element={<Seats />} />
       </Routes>
