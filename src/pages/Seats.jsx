@@ -14,6 +14,8 @@ export default function Seats() {
 
   const { theater } = useSelector((state) => state.theater.singleTheater);
 
+  console.log(theater);
+
   const fetchTheater = async () => {
     const response = await axios.get(
       `https://movie-ticket-server.vercel.app/theater/${id}`,
@@ -43,7 +45,12 @@ export default function Seats() {
               <b>Movie:- {theater.movieName}</b>
             </h4>
           </div>
-          <div className="row">
+          <div
+            className="grid-container"
+            style={{
+              gridTemplateColumns: `repeat(${theater.seatsPerRow}, 1fr)`,
+            }}
+          >
             {theater.seats.map((seat, index) => (
               <SeatBtn theaterId={theater._id} seat={seat} key={index} />
             ))}

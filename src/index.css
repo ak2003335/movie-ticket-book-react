@@ -59,3 +59,15 @@ body {
   background-color: red;
   color: white;
 }
+
+.grid-container {
+  display: grid;
+  gap: 10px; /* Optional: Add gap between grid items */
+}
+
+.grid-item {
+  background-color: #041134;
+  padding: 10px;
+  text-align: center;
+}
+

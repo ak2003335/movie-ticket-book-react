@@ -35,9 +35,9 @@ export default function SeatBtn({ seat, theaterId }) {
   };
 
   return (
-    <div className="col-1">
+    <div className="grid-item">
       <button
-        className={isSeatBooked ? "singleSeatRed px-2 my-3" : "singleSeat px-2 my-3"}
+        className={isSeatBooked ? "singleSeatRed" : "singleSeat"}
         style={{ cursor: "pointer" }}
         onClick={() => handleClick(seat._id)}
       >

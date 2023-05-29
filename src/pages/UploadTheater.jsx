@@ -96,7 +96,7 @@ export default function UploadTheater() {
           </div>
           <div className="form-group my-3">
             <label htmlFor="exampleInputEmail1">
-              <b>SeatsPerRow</b>
+              <b>SeatsPerColumn</b>
             </label>
             <input
               type="number"
