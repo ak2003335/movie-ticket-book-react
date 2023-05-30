@@ -46,7 +46,7 @@ body {
 .singleSeat {
   z-index: 100;
   height: 30px;
-  width: 30px;
+  width: 38px;
   border: 0.5px solid white;
   background-color: #041134;
   color: white;
@@ -54,7 +54,7 @@ body {
 .singleSeatRed {
   z-index: 100;
   height: 30px;
-  width: 30px;
+  width: 38px;
   border: 0.5px solid white;
   background-color: red;
   color: white;

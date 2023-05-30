@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
-import { logout , login} from "../redux/user/userSlice";
+import { logout, login } from "../redux/user/userSlice";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { user, isLoggedin } = useSelector((state) => state.auth);
+  const { grocePrice } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const [cookies, setCookie] = useCookies();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -44,9 +45,9 @@ export default function Navbar() {
     dispatch(login(response.data));
   };
 
-  useEffect(()=>{
-    fetchData()
-  },[])
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-dark">
@@ -85,9 +86,16 @@ export default function Navbar() {
           ) : (
             ""
           )}
-          {isLoggedin && user.role == 'owner' ? (
+          {isLoggedin && user.role == "owner" ? (
             <Link className="custBtn px-4 mx-3" to={"/upload-theater"}>
               <b>UPLOAD THEATER</b>
+            </Link>
+          ) : (
+            ""
+          )}
+          {isLoggedin && grocePrice > 0 ? (
+            <Link className="custBtn px-4 mx-3" to={"/payment"}>
+              <b>Pay {grocePrice > 0 ? `$${grocePrice}` : ""} </b>
             </Link>
           ) : (
             ""

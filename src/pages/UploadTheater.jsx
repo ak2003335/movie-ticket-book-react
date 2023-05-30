@@ -89,7 +89,7 @@ export default function UploadTheater() {
       );
 
       toast.success(response.data.message);
-      navigate('/upload-theater')
+      navigate('/book-ticket')
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);

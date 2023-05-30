@@ -1,45 +1,42 @@
 import React, { useState } from "react";
-import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addItem, removeItem } from "../redux/ticketCart/cart";
 
-export default function SeatBtn({ seat, theaterId }) {
-  const [cookies, setCookie] = useCookies();
-  const navigate = useNavigate();
+export default function SeatBtn({ seat, theater }) {
+  const dispatch = useDispatch();
 
-  const token = cookies.user_Token;
-  const [isSeatBooked, setIsSeatBooked] = useState(seat.isBooked);
+  const [isSeatBooked, setIsSeatBooked] = useState(false);
 
-  const handleClick = async (id) => {
-    if(seat.isBooked){
-      return toast.error("Already booked")
+  const handleClick = async (seatDetails) => {
+    if (seat.isBooked) {
+      return toast.error("Already booked");
     }
-    try {
-      await axios.post(
-        `https://movie-ticket-server.vercel.app/theater/${theaterId}/${id}`,
-        null,
-        {
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      toast.success("Seat Booked");
-      setIsSeatBooked(true);
-      navigate(`/theater/${theaterId}`);
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response.data.message);
-    }
+
+    const data = {
+      seatDetails,
+      theater,
+    };
+
+    dispatch(addItem(data));
+
+    setIsSeatBooked(true);
+
+    setTimeout(() => {
+      dispatch(removeItem());
+      setIsSeatBooked(false);
+    }, 60000 * 5);
   };
 
   return (
     <div className="grid-item">
       <button
-        className={isSeatBooked ? "singleSeatRed" : "singleSeat"}
-        style={{ cursor: "pointer" }}
-        onClick={() => handleClick(seat._id)}
+        className={seat.isBooked ? "singleSeatRed" : "singleSeat"}
+        style={{
+          cursor: "pointer",
+          backgroundColor: `${isSeatBooked ? "#bbbb76" : ""}`,
+        }}
+        onClick={() => handleClick(seat)}
       >
         {seat.seatNumber}
       </button>

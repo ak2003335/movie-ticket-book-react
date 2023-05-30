@@ -8,6 +8,7 @@ import Registration from "./pages/Registration";
 import UploadTheater from "./pages/UploadTheater";
 import Alltheater from "./pages/Alltheater";
 import Seats from "./pages/Seats";
+import Payment from "./pages/Payment";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/upload-theater" element={<UploadTheater />} />
         <Route path="/book-ticket" element={<Alltheater />} />
         <Route path="/theater/:id" element={<Seats />} />
+        <Route path="/payment" element={<Payment />} />
       </Routes>
       </div>
     </Router>
