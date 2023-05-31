@@ -43,7 +43,7 @@ const Payment = () => {
 
   const handleDownLoad = async () => {
     try {
-      const response = await axios.post(`http://localhost:4000/auth/download`, data, {
+      const response = await axios.post(`https://movie-ticket-server.vercel.app/auth/download`, data, {
         responseType: "blob",
       });
 
