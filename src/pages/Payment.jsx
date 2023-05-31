@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useCookies } from "react-cookie";
 import { toast } from "react-toastify";
@@ -10,21 +10,21 @@ import { removeItem } from "../redux/ticketCart/cart";
 const Payment = () => {
   const { ticketItem, grocePrice } = useSelector((state) => state.cart);
   const { singleTheater } = useSelector((state) => state.theater);
+  const [isDownload, setIsDownLoad] = useState(false);
 
   const [cookies, setCookie] = useCookies();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const token = cookies.user_Token;
+  const data = {
+    ticketItem,
+    id: singleTheater.theater._id,
+  };
 
   const handleBook = async (e) => {
-    const data = {
-      ticketItem,
-      id: singleTheater.theater._id,
-    };
-
     try {
-      const response = await axios.post(
+      await axios.post(
         `https://movie-ticket-server.vercel.app/theater/book-seat`,
         data,
         {
@@ -33,9 +33,28 @@ const Payment = () => {
           },
         }
       );
+      setIsDownLoad(true);
       toast.success("Seats Booked");
-      dispatch(removeItem());
-      navigate(`/theater/${singleTheater.theater._id}`);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
+  };
+
+  const handleDownLoad = async () => {
+    try {
+      const response = await axios.post(`http://localhost:4000/auth/download`, data, {
+        responseType: "blob",
+      });
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "ticket.pdf");
+      document.body.appendChild(link);
+      link.click();
+      dispatch(removeItem())
+      navigate(`/theater/${data.id}`)
     } catch (error) {
       console.log(error);
       toast.error(error.response.data.message);
@@ -73,13 +92,19 @@ const Payment = () => {
                 ))}
             </tbody>
           </table>
-          <button
-            className="custBtn px-4"
-            style={{ float: "right" }}
-            onClick={() => handleBook()}
-          >
-            Pay ${grocePrice}
-          </button>
+          <div style={{ float: "right" }}>
+            <button className="custBtn px-4" onClick={() => handleBook()}>
+              Pay ${grocePrice}
+            </button>
+            {isDownload && (
+              <button
+                className="custBtn px-4 mx-2"
+                onClick={() => handleDownLoad()}
+              >
+                Download Ticket
+              </button>
+            )}
+          </div>
         </div>
       ) : (
         <div className="text-center">
